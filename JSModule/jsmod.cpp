@@ -34,7 +34,7 @@ bool JsMod::CalcFormula(QString formula, Variable *varResult)
         if(ResultJsVar.isNumber()){
             double val = ResultJsVar.toNumber();
             if(!qIsNaN(val) && !qIsInf(val)){
-                varResult->setValue(val);
+                varResult->setvalue(val);
                 return true;
             }
         }
@@ -62,16 +62,18 @@ bool JsMod::AddVar(QString name, QVariant *var)
 bool JsMod::AddVar(Variable *var)
 {
     if(var != nullptr){
-        QJSValue val = var->getvalue();
-        if(val.isNumber()){
-                if(!qIsNaN(val.toNumber()) && !qIsInf(val.toNumber())){
-                jsBase->globalObject().setProperty(var->getname(), val);
+        //QJSValue val = var->getvalue();
+        QJSValue val = jsBase->newQObject(var);
+        //if(val.isNumber()){
+                //if(!qIsNaN(val.toNumber()) && !qIsInf(val.toNumber())){
+                //jsBase->globalObject().setProperty(var->getname(), val);
+                    jsBase->globalObject().setProperty(var->getname(), val);
                 varVec.append(var->getname());
-                connect(var, Variable::valueChanged, this, JsMod::slotUpdateVar, Qt::ConnectionType::DirectConnection);
+                //connect(var, Variable::valueChanged, this, JsMod::slotUpdateVar, Qt::ConnectionType::DirectConnection);
                 return true;
-            }
-        }
-        return false;
+           // }
+       // }
+       // return false;
     }
     return false;
 }
@@ -137,7 +139,7 @@ double Variable::getvalue()
     return _value;
 }
 
-void Variable::setValue(double val)
+void Variable::setvalue(double val)
 {
     _value = val;
     emit valueChanged(this);

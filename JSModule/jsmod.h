@@ -36,19 +36,20 @@ private:
 class Variable : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(double value MEMBER _value);
 public:
-    Variable(){}
-    Variable(QString name, double value){_name = name; _value = value;}
-    ~Variable(){}
+    Q_INVOKABLE Variable(){}
+    Q_INVOKABLE Variable(QString name, double value){_name = name; _value = value;}
+    Q_INVOKABLE ~Variable(){}
 
-    QString getname();
-    void setname(QString val);
+    Q_INVOKABLE QString getname();
+    Q_INVOKABLE void setname(QString val);
 
-    double getvalue();
-    void setValue(double val);
+    Q_INVOKABLE double getvalue();
+    Q_INVOKABLE void setvalue(double val);
 
 
-    Variable& operator=(const double& rvalue){
+    Q_INVOKABLE Variable& operator=(const double& rvalue){
         _value = rvalue;
         emit valueChanged(this);
         return *this;
@@ -57,9 +58,9 @@ public:
 signals:
     void valueChanged(Variable* var);
 
-private:
-    QString _name;
-    double _value;
+public:
+     QString _name;
+     double _value;
 };
 
 #endif // JSMOD_H
