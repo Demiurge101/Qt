@@ -62,18 +62,12 @@ bool JsMod::AddVar(QString name, QVariant *var)
 bool JsMod::AddVar(Variable *var)
 {
     if(var != nullptr){
-        //QJSValue val = var->getvalue();
         QJSValue val = jsBase->newQObject(var);
-        //if(val.isNumber()){
-                //if(!qIsNaN(val.toNumber()) && !qIsInf(val.toNumber())){
-                //jsBase->globalObject().setProperty(var->getname(), val);
-                    jsBase->globalObject().setProperty(var->getname(), val);
-                varVec.append(var->getname());
-                //connect(var, Variable::valueChanged, this, JsMod::slotUpdateVar, Qt::ConnectionType::DirectConnection);
-                return true;
-           // }
-       // }
-       // return false;
+        jsBase->globalObject().setProperty(var->getname(), val);
+        //val.setProperty("значение", 77);
+        varVec.append(var->getname());
+        //connect(var, Variable::valueChanged, this, JsMod::slotUpdateVar, Qt::ConnectionType::DirectConnection);
+        return true;
     }
     return false;
 }
@@ -122,6 +116,12 @@ bool JsMod::RemoveVar(Variable *var)
         return true;
     }
     return false;
+}
+
+Variable::Variable(QString name, double value)
+{
+    _name = name;
+    _value = value;
 }
 
 QString Variable::getname()
